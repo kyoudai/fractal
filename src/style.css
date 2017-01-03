@@ -1,0 +1,27 @@
+document, html {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+#reference, #stage {
+  min-width: 50px;
+  min-height: 50px;
+  border: 1px solid black;
+  display: inline-block;
+}
+
+#stats {
+  margin-top: 10px;
+}
+#stats div {
+  display: inline-block;
+  font-family: Arial;
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+  width: 150px;
+  text-align: right;
+}
+
