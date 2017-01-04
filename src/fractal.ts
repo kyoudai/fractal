@@ -1,4 +1,5 @@
 import Polygon from './polygon';
+import Utils from './utils';
 import { Point, RGBA } from './interface';
 
 class Fractal {
@@ -90,24 +91,20 @@ class Fractal {
     let points = [];
     for (let i = 0; i < count; i++ ) {
       points.push({
-        x: this.generateRandomNumber(0, this.canvas.width),
-        y: this.generateRandomNumber(0, this.canvas.height)
+        x: Utils.random(0, this.canvas.width),
+        y: Utils.random(0, this.canvas.height)
       });
     }
 
     return points;
   }
 
-  private generateRandomNumber(min, max): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
   private generateRandomColour(): RGBA {
     return {
-      r: this.generateRandomNumber(0, 255),
-      g: this.generateRandomNumber(0, 255),
-      b: this.generateRandomNumber(0, 255),
-      a: this.generateRandomNumber(0, 10000) / 10000
+      r: Utils.random(0, 255),
+      g: Utils.random(0, 255),
+      b: Utils.random(0, 255),
+      a: Utils.random(0, 10000) / 10000
     }
   }
 
