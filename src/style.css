@@ -1,8 +1,6 @@
 document, html {
   width: 100%;
   height: 100%;
-  font-family: Arial, sans-serif;
-  color: #333;
 }
 
 #reference, #stage {
@@ -10,11 +8,19 @@ document, html {
   min-height: 50px;
   border: 1px solid black;
   display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+#reference img {
+  margin: 0;
+  display: block;
 }
 
 #stats {
   margin-top: 10px;
 }
+
 #stats div {
   display: inline-block;
   font-family: Arial;

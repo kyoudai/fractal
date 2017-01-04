@@ -1,0 +1,22 @@
+{
+  "name": "fractal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack && hhtp-server ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyoudai/fractal.git"
+  },
+  "author": "George Nemes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kyoudai/fractal/issues"
+  },
+  "homepage": "https://github.com/kyoudai/fractal#readme",
+  "dependencies": {
+    "webpack-typescript": "^0.5.6"
+  }
+}
