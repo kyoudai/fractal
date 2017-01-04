@@ -3,12 +3,12 @@ import { Point, RGBA } from './interface';
 
 class Fractal {
 
+  private POLYGON_COUNT = 0;
+  private POLYGON_VERTICES = 0;
+
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private polygons: Array<Polygon>;
-
-  private POLYGON_COUNT = 0;
-  private POLYGON_VERTICES = 0;
 
   constructor(polygons = 100, vertices = 3) {
     this.polygons = [];
@@ -16,7 +16,7 @@ class Fractal {
     this.POLYGON_VERTICES = vertices;
   }
 
-  start(imageUrl: string) {
+  match(imageUrl: string) {
     this.loadImage(imageUrl).then(img => this.main(img));
   }
 
@@ -24,12 +24,30 @@ class Fractal {
     this.setContext();
     this.configureDom(img);
 
-    this.drawPolygon(
-      new Polygon(
-        this.generateRandomPoints(this.POLYGON_VERTICES),
-        this.generateRandomColour()
-      )
-    );
+    this.polygons = this.generateInitialPolygons();
+    setInterval(this.drawFrame.bind(this), 0);
+  }
+
+  private generateInitialPolygons(): Array<Polygon> {
+    let list = [];
+    for (let i = 0; i < this.POLYGON_COUNT; i++) {
+      list.push(
+        new Polygon(
+          this.generateRandomPoints(this.POLYGON_VERTICES),
+          this.generateRandomColour()
+        )
+      );
+    }
+    return list;
+  }
+
+  private drawFrame() {
+    // clear canvas
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    for (let polygon of this.polygons) {
+      this.drawPolygon(polygon);
+    }
   }
 
   private setContext() {
@@ -58,12 +76,13 @@ class Fractal {
     this.context.beginPath();
     this.context.moveTo.apply(this.context, polygon.getPointArr(0));
     const points = polygon.points.length;
+
     for (let i = 1; i < points; i++) {
       this.context.lineTo.apply(this.context, polygon.getPointArr(i));
     }
 
     this.context.closePath();
-    this.context.fillStyle = `rgba(${polygon.colour.r}, ${polygon.colour.g}, ${polygon.colour.b}, ${polygon.colour.a}`;
+    this.context.fillStyle = polygon.getColourString();
     this.context.fill();
   }
 
