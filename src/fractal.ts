@@ -30,16 +30,12 @@ class Fractal {
   }
 
   private generateInitialPolygons(): Array<Polygon> {
-    let list = [];
-    for (let i = 0; i < this.POLYGON_COUNT; i++) {
-      list.push(
+    return new Array(this.POLYGON_COUNT).fill(null).map(() =>
         new Polygon(
           this.generateRandomPoints(this.POLYGON_VERTICES),
           this.generateRandomColour()
         )
-      );
-    }
-    return list;
+    );
   }
 
   private drawFrame() {
@@ -88,15 +84,12 @@ class Fractal {
   }
 
   private generateRandomPoints(count: number): Array<Point> {
-    let points = [];
-    for (let i = 0; i < count; i++ ) {
-      points.push({
-        x: Utils.random(0, this.canvas.width),
-        y: Utils.random(0, this.canvas.height)
-      });
-    }
-
-    return points;
+    return new Array(count).fill(null).map(() =>
+      ({
+          x: Utils.random(0, this.canvas.width),
+          y: Utils.random(0, this.canvas.height)
+      })
+    );
   }
 
   private generateRandomColour(): RGBA {
