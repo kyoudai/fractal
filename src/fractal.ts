@@ -1,6 +1,6 @@
 import Polygon from './polygon';
 import Utils from './utils';
-import { Point, RGBA } from './interface';
+import { Point, RGBA, StatsDOM } from './interface';
 
 class Fractal {
 
@@ -10,20 +10,36 @@ class Fractal {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private polygons: Array<Polygon>;
+  private nextMutable: number;
+  private imageData: Uint8ClampedArray;
+  private lastMatch: number;
+  private maxDifference: number;
+  private stats: StatsDOM;
+  private mutations: number;
+  private breakthroughs: number;
 
   constructor(polygons = 100, vertices = 3) {
     this.polygons = [];
+    this.stats = {};
+    this.lastMatch = 0;
+    this.nextMutable = 0;
+    this.maxDifference = 1;
+    this.mutations = 0;
+    this.breakthroughs = 0;
     this.POLYGON_COUNT = polygons;
     this.POLYGON_VERTICES = vertices;
   }
 
   match(imageUrl: string) {
-    this.loadImage(imageUrl).then(img => this.main(img));
+    this.loadImage(imageUrl)
+    .then(img => this.getImageData(img))
+    .then(img => this.main(img));
   }
 
   private main(img: HTMLImageElement) {
     this.setContext();
     this.configureDom(img);
+    this.cacheDomElements();
 
     this.polygons = this.generateInitialPolygons();
     setInterval(this.drawFrame.bind(this), 0);
@@ -42,9 +58,34 @@ class Fractal {
     // clear canvas
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    // reset index in case we need to
+    if (this.nextMutable >= this.POLYGON_COUNT) {
+      this.nextMutable = 0;
+    }
+
+    // mutate one polygon
+    let poly = this.polygons[this.nextMutable];
+    poly.stash()
+    poly.mutate(this.canvas.width, this.canvas.height);
+
+    // draw stuff
     for (let polygon of this.polygons) {
       this.drawPolygon(polygon);
     }
+
+    const match = this.getMatch();
+    if ( match > this.lastMatch ) {
+      this.lastMatch = match;
+      this.setStat('break', this.breakthroughs++);
+      this.setStat('match', match.toFixed(4) + '%');
+    }
+    else {
+      poly.pop();
+    }
+
+    // go to next mutable
+    this.setStat('mutations', this.mutations++);
+    this.nextMutable++;
   }
 
   private setContext() {
@@ -57,6 +98,7 @@ class Fractal {
       let img = new Image();
 
       img.src = imageUrl;
+      img.crossOrigin = 'anonymous';
       img.onload = () => resolve(img);
       img.onerror = (err) => reject('Could not load image');
     });
@@ -67,6 +109,7 @@ class Fractal {
 
     this.canvas.width = img.width;
     this.canvas.height = img.height;
+    this.maxDifference = this.canvas.width * this.canvas.height * 3 * 255;
   }
 
   private drawPolygon(polygon: Polygon) {
@@ -99,6 +142,54 @@ class Fractal {
       b: Utils.random(0, 255),
       a: Utils.random(0, 10000) / 10000
     }
+  }
+
+  private getImageData(img: HTMLImageElement): Promise<HTMLImageElement> {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    ({ width: canvas.width, height: canvas.height } = img );
+    context.drawImage(img, 0, 0);
+
+    this.imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    return Promise.resolve(img);
+  }
+
+  private getMatch(): number {
+    const diff = this.calculateDifference();
+
+    return  100 * (1 - diff/this.maxDifference);
+  }
+
+  private calculateDifference(): number {
+    let imageData = this.imageData;
+    let canvasData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height).data;
+
+    if (imageData.length !== canvasData.length) {
+      console.warn('Invalid data comparison');
+      return;
+    }
+
+    let difference = 0;
+    for (let i = 0; i <= canvasData.length - 5; i += 4) {
+      difference += Math.abs(imageData[i] - canvasData[i] );
+      difference += Math.abs(imageData[i + 1] - canvasData[i + 1]);
+      difference += Math.abs(imageData[i + 2] - canvasData[i + 2]);
+    }
+
+    return difference;
+  }
+
+  private cacheDomElements() {
+    this.stats =  {
+      match: document.getElementById('match'),
+      break: document.getElementById('break'),
+      mutations: document.getElementById('mutations')
+    };
+  }
+
+  private setStat(stat: 'match' | 'break' | 'mutations', val: string | number) {
+    this.stats[stat].innerHTML = val.toString();
   }
 
 }

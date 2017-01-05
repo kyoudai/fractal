@@ -10,4 +10,10 @@ interface RGBA {
   a: number;
 }
 
-export { Point, RGBA }
+interface StatsDOM {
+  match?: HTMLElement
+  break?: HTMLElement;
+  mutations?: HTMLElement;
+}
+
+export { Point, RGBA, StatsDOM }
