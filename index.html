@@ -5,14 +5,17 @@
   <title>Fractal</title>
 
   <link rel="stylesheet" href="src/style.css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
 </head>
 <body>
 
+  <!-- draw section -->
   <div id="reference"></div>
   <canvas id="stage"></canvas>
   <canvas id="graph"></canvas>
-  <div id="stats">
+
+  <!-- stats section -->
+  <div id="stats" class="panel">
     <div>Match:</div><div id="match">0</div>
     <br>
     <div>Breakthroughs:</div><div id="break">0</div>
@@ -20,9 +23,12 @@
     <div>Mutations:</div><div id="mutations">0</div>
   </div>
 
-  <input type="number" id="polygons" placeholder="100" value="100">
-  <input type="number" id="vertices" placeholder="6" value="6">
-  <div id='start_match'>Start</div>
+  <!-- initial configuration -->
+  <div id='initial' class="panel">
+    <input type="number" id="polygons" placeholder="100" value="100">
+    <input type="number" id="vertices" placeholder="6" value="6">
+    <div id='start_match'>Start</div>
+  <div>
 
   <script src="dist/app.js"></script>
 </body>

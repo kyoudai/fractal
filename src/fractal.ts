@@ -110,6 +110,7 @@ class Fractal {
   }
 
   private configureDom(img: HTMLImageElement) {
+    document.getElementById('reference').innerHTML = '';
     document.getElementById('reference').appendChild(img);
 
     this.canvas.width = img.width;
