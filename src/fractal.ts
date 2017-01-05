@@ -17,6 +17,7 @@ class Fractal {
   private stats: StatsDOM;
   private mutations: number;
   private breakthroughs: number;
+  private graph: HTMLCanvasElement;
 
   constructor(polygons = 100, vertices = 3) {
     this.polygons = [];
@@ -56,7 +57,10 @@ class Fractal {
 
   private drawFrame() {
     // clear canvas
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // fill with pure white
+    this.context.fillStyle = '#fff';
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     // reset index in case we need to
     if (this.nextMutable >= this.POLYGON_COUNT) {
@@ -91,6 +95,7 @@ class Fractal {
   private setContext() {
     this.canvas = <HTMLCanvasElement>document.getElementById('stage');
     this.context = this.canvas.getContext('2d');
+    this.graph = <HTMLCanvasElement>document.getElementById('graph');
   }
 
   private loadImage(imageUrl: string): Promise<HTMLImageElement> {
@@ -109,6 +114,8 @@ class Fractal {
 
     this.canvas.width = img.width;
     this.canvas.height = img.height;
+    this.graph.width = img.width;
+    this.graph.height = img.height;
     this.maxDifference = this.canvas.width * this.canvas.height * 3 * 255;
   }
 
@@ -171,12 +178,25 @@ class Fractal {
     }
 
     let difference = 0;
+    let differenceR, differenceG, differenceB
+    let graphContext = this.graph.getContext('2d');
+    let graphData: any = graphContext.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    let dat = graphData.data;
     for (let i = 0; i <= canvasData.length - 5; i += 4) {
-      difference += Math.abs(imageData[i] - canvasData[i] );
-      difference += Math.abs(imageData[i + 1] - canvasData[i + 1]);
-      difference += Math.abs(imageData[i + 2] - canvasData[i + 2]);
+      differenceR = Math.abs(imageData[i] - canvasData[i] );
+      differenceG = Math.abs(imageData[i + 1] - canvasData[i + 1]);
+      differenceB = Math.abs(imageData[i + 2] - canvasData[i + 2]);
+
+      dat[i] = 0
+      dat[i + 1] = 0;
+      dat[i + 2] = 0;
+      //dat[i + 3] = (1 - (differenceR + differenceG + differenceB) / (255 * 3)) * 255;
+      //wolfram simplified
+      dat[i + 3] = 1/3 * (-differenceR - differenceG - differenceB + 765);
+      difference += differenceR + differenceG + differenceB;
     }
 
+    graphContext.putImageData(graphData, 0, 0);
     return difference;
   }
 

@@ -3,7 +3,7 @@ document, html {
   height: 100%;
 }
 
-#reference, #stage {
+#reference, #stage, #graph {
   min-width: 50px;
   min-height: 50px;
   border: 1px solid black;
