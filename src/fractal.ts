@@ -27,6 +27,7 @@ class Fractal {
     this.maxDifference = 1;
     this.mutations = 0;
     this.breakthroughs = 0;
+
     this.POLYGON_COUNT = polygons;
     this.POLYGON_VERTICES = vertices;
   }
@@ -43,7 +44,6 @@ class Fractal {
     this.cacheDomElements();
 
     this.polygons = this.generateInitialPolygons();
-    console.log(this.polygons[0].getMutagens());
     setInterval(this.drawFrame.bind(this), 0);
   }
 
@@ -57,9 +57,6 @@ class Fractal {
   }
 
   private drawFrame() {
-    // clear canvas
-    //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // fill with pure white
     this.context.fillStyle = '#fff';
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
