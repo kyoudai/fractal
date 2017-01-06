@@ -16,4 +16,21 @@ interface StatsDOM {
   mutations?: HTMLElement;
 }
 
-export { Point, RGBA, StatsDOM }
+// cannot have enum inside class
+enum mutationType {
+  POINT_X,
+  POINT_Y,
+  COLOUR,
+  ALPHA,
+  FULL_POSITION,
+  FULL_COLOUR,
+  FULL
+}
+
+interface Mutagen {
+  prop: string;
+  type: mutationType;
+  index?: number;
+}
+
+export { Point, RGBA, StatsDOM, Mutagen, mutationType };

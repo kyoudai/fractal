@@ -1,16 +1,20 @@
-import { Point, RGBA } from './interface';
+import { Point, RGBA, Mutagen, mutationType } from './interface';
 import Utils from './utils';
+
 
 class Polygon {
 
   points: Array<Point>;
   colour: RGBA;
   cache: any;
+  mutagens: Array<Mutagen>;
 
   constructor(points: Array<Point>, colour: RGBA) {
     this.points = points;
     this.colour = colour;
     this.cache = {};
+
+    this.mutagens = this.getMutagens();
   }
 
   getPoint(index: number): Point {
@@ -33,28 +37,48 @@ class Polygon {
     };
   }
 
+  getMutagens(): Array<Mutagen> {
+    return [
+      ...this.points.map((point, index) =>  [{ index, prop: 'x', type: mutationType.POINT_X }, {index, prop: 'y', type: mutationType.POINT_Y }]).reduce((a, b) => a.concat(b)),
+      ...['r', 'g', 'b'].map( (colour, index) => ({ index, prop: colour, type: mutationType.COLOUR }) ),
+      { prop: 'a', type: mutationType.ALPHA },
+      { prop: 'xy', type: mutationType.FULL_POSITION },
+      { prop: 'rgba', type: mutationType.FULL_COLOUR },
+      { prop: 'xyrgba', type: mutationType.FULL }
+    ];
+  }
+
   // randomly mutate
   mutate(width, height) {
+    const mutagen = this.mutagens;
+    const seed = Utils.random(0, mutagen.length - 1);
 
-    const points = this.points.length * 2;
-    const mutables = points + 4 - 1;
-    const seed = Utils.random(0, mutables);
-
-    if (seed < points) {
-      const index = Math.floor(seed/2);
-      if (seed % 2 > 0) {
-        this.points[index]['y'] = Utils.random(0, height);
-      }
-      else {
-        this.points[index]['x'] = Utils.random(0, width);
-      }
-    }
-    else if (seed < mutables) {
-      const colours = ['b', 'g', 'r'];
-      this.colour[colours[mutables - points - 1]] = Utils.random(0, 255);
-    }
-    else if (seed === mutables) {
-      this.colour.a = Utils.random(0, 10000) / 10000
+    let agent = mutagen[seed];
+    switch(agent.type) {
+      case mutationType.POINT_X:
+        this.getPoint(agent.index).x = Utils.random(0, width);
+        break;
+      case mutationType.POINT_Y:
+        this.getPoint(agent.index).y = Utils.random(0, height);
+        break;
+      case mutationType.COLOUR:
+        this.colour[agent.prop] = Utils.random(0, 255);
+        break;
+      case mutationType.ALPHA:
+        this.colour.a = Utils.random(0, 10000) / 10000;
+        break;
+      case mutationType.FULL_POSITION:
+        this.points = Utils.generateRandomPoints(this.points.length, width, height);
+        break;
+      case mutationType.FULL_COLOUR:
+        this.colour = Utils.generateRandomColour();
+        break;
+      case mutationType.FULL:
+        this.points = Utils.generateRandomPoints(this.points.length, width, height);
+        this.colour = Utils.generateRandomColour();
+        break;
+      default:
+        console.warn('No mutation matched');
     }
   }
 

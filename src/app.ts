@@ -8,7 +8,7 @@ document.getElementById('start_match').addEventListener('click', () => {
   const vertices = (<HTMLInputElement>document.getElementById('vertices')).value;
 
   fractal = new Fractal(parseInt(polygons), parseInt(vertices));
-  fractal.match('reference/Mona-Lisa-200x200.jpg');
+  fractal.match('reference/gandalf.jpg');
 
-  document.getElementById('initial').innerHTML = `Started at ${Date.now()}. Using ${polygons} polygons with ${vertices} vertices`;
+  document.getElementById('initial').innerHTML = `Started at ${Date.now()}. Using ${polygons} polygons with ${vertices} vertices.`;
 });

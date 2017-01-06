@@ -43,14 +43,15 @@ class Fractal {
     this.cacheDomElements();
 
     this.polygons = this.generateInitialPolygons();
+    console.log(this.polygons[0].getMutagens());
     setInterval(this.drawFrame.bind(this), 0);
   }
 
   private generateInitialPolygons(): Array<Polygon> {
     return new Array(this.POLYGON_COUNT).fill(null).map(() =>
         new Polygon(
-          this.generateRandomPoints(this.POLYGON_VERTICES),
-          this.generateRandomColour()
+          Utils.generateRandomPoints(this.POLYGON_VERTICES, this.canvas.width, this.canvas.height),
+          Utils.generateRandomColour()
         )
     );
   }
@@ -113,43 +114,25 @@ class Fractal {
     document.getElementById('reference').innerHTML = '';
     document.getElementById('reference').appendChild(img);
 
-    this.canvas.width = img.width;
-    this.canvas.height = img.height;
-    this.graph.width = img.width;
-    this.graph.height = img.height;
+    ({ width: this.canvas.width, height: this.canvas.height } = img );
+    ({ width: this.graph.width, height: this.graph.height } = img );
     this.maxDifference = this.canvas.width * this.canvas.height * 3 * 255;
   }
 
   private drawPolygon(polygon: Polygon) {
-    this.context.beginPath();
-    this.context.moveTo.apply(this.context, polygon.getPointArr(0));
+    const ctx = this.context;
     const points = polygon.points.length;
 
+    ctx.beginPath();
+    ctx.moveTo.apply(ctx, polygon.getPointArr(0));
+
     for (let i = 1; i < points; i++) {
-      this.context.lineTo.apply(this.context, polygon.getPointArr(i));
+      ctx.lineTo.apply(ctx, polygon.getPointArr(i));
     }
 
-    this.context.closePath();
-    this.context.fillStyle = polygon.getColourString();
-    this.context.fill();
-  }
-
-  private generateRandomPoints(count: number): Array<Point> {
-    return new Array(count).fill(null).map(() =>
-      ({
-          x: Utils.random(0, this.canvas.width),
-          y: Utils.random(0, this.canvas.height)
-      })
-    );
-  }
-
-  private generateRandomColour(): RGBA {
-    return {
-      r: Utils.random(0, 255),
-      g: Utils.random(0, 255),
-      b: Utils.random(0, 255),
-      a: Utils.random(0, 10000) / 10000
-    }
+    ctx.closePath();
+    ctx.fillStyle = polygon.getColourString();
+    ctx.fill();
   }
 
   private getImageData(img: HTMLImageElement): Promise<HTMLImageElement> {
