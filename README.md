@@ -18,7 +18,7 @@ npm install
 
 Building and then running:
 ```
-npm run start
+npm start
 ```
 
 Building: `npm run build`
