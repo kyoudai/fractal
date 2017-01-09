@@ -2,7 +2,7 @@
 
 Algorithm to randomly match a given image.
 
-## Running
+## Building first time
 
 The project needs `Webpack` installed for packaging:
 
@@ -16,11 +16,8 @@ Install all the dependencies.
 npm install
 ```
 
-Building and then running:
+## Running
 ```
 npm start
 ```
 
-Building: `npm run build`
-
-Running: `npm run serve`
