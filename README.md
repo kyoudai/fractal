@@ -10,17 +10,17 @@ The project needs `Webpack` installed for packaging:
 npm install -g webpack
 ```
 
-Install all the dependencies (currently just Typescript loader)
+Install all the dependencies.
 
 ```
 npm install
 ```
 
-Building:
-
+Building and then running:
 ```
-webpack
+npm run start
 ```
 
-Running is as simple as loading `index.html` in your favourite server.
-I did not add an auto-refresh live server since it's dangerous the reload the page and lose precious iterations.
+Building: `npm run build`
+
+Running: `npm run serve`

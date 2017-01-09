@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "default": "webpack"
+    "build": "webpack",
+    "serve": "./node_modules/http-server/bin/http-server -p 9001 .",
+    "start": "npm run serve && npm run build"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,7 @@
   },
   "homepage": "https://github.com/kyoudai/fractal#readme",
   "dependencies": {
+    "http-server": "^0.9.0",
     "typescript": "^2.0.10",
     "webpack-typescript": "^0.5.6"
   }
