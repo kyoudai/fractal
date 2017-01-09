@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "serve": "./node_modules/http-server/bin/http-server -p 9001 .",
+    "serve": "http-server -p 9001 .",
     "start": "npm run serve && npm run build"
   },
   "repository": {
