@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack && hhtp-server ."
+    "default": "webpack"
   },
   "repository": {
     "type": "git",
