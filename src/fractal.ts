@@ -60,11 +60,6 @@ class Fractal {
     this.context.fillStyle = '#fff';
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // reset index in case we need to
-    if (this.nextMutable >= this.POLYGON_COUNT) {
-      this.nextMutable = 0;
-    }
-
     // mutate one polygon
     let poly = this.polygons[this.nextMutable];
     poly.stash()
@@ -87,7 +82,11 @@ class Fractal {
 
     // go to next mutable
     this.setStat('mutations', this.mutations++);
-    this.nextMutable++;
+
+    // reset index in case we need to
+    if (++this.nextMutable >= this.POLYGON_COUNT) {
+      this.nextMutable = 0;
+    }
   }
 
   private setContext() {

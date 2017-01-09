@@ -8,7 +8,11 @@ document.getElementById('start_match').addEventListener('click', () => {
   const vertices = (<HTMLInputElement>document.getElementById('vertices')).value;
 
   fractal = new Fractal(parseInt(polygons), parseInt(vertices));
-  fractal.match('reference/gandalf.jpg');
+  fractal.match('reference/circle.png');
 
-  document.getElementById('initial').innerHTML = `Started at ${Date.now()}. Using ${polygons} polygons with ${vertices} vertices.`;
+  // get start date
+  let date = new Date();
+  date.setTime(Date.now());
+  const friendlyDate = date.toUTCString();
+  document.getElementById('initial').innerHTML = `Started on ${friendlyDate}.<br> Using ${polygons} polygons with ${vertices} vertices.`;
 });

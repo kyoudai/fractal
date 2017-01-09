@@ -49,7 +49,7 @@ class Polygon {
   }
 
   // randomly mutate
-  mutate(width, height) {
+  mutate(width: number, height: number) {
     const mutagen = this.mutagens;
     const seed = Utils.random(0, mutagen.length - 1);
 
