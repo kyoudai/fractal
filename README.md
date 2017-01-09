@@ -1,5 +1,7 @@
 # fractal
 
+Algorithm to randomly match a given image.
+
 ## Running
 
 The project needs `Webpack` installed for packaging:
