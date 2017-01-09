@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/kyoudai/fractal#readme",
   "dependencies": {
+    "typescript": "^2.0.10",
     "webpack-typescript": "^0.5.6"
   }
 }
