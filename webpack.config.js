@@ -5,7 +5,7 @@ module.exports = {
     filename: 'app.js'
   },
   resolve: {
-    extensions: ['', '.js', '.ts']
+    extensions: ['.js', '.ts']
   },
   module: {
     loaders: [

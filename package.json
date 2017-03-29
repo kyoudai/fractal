@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "serve": "http-server . -o -p 9001",
-    "start": "npm run serve && npm run build"
+    "start": "npm run build && npm run serve"
   },
   "repository": {
     "type": "git",
@@ -18,9 +18,10 @@
     "url": "https://github.com/kyoudai/fractal/issues"
   },
   "homepage": "https://github.com/kyoudai/fractal#readme",
-  "dependencies": {
+  "devDependencies": {
     "http-server": "^0.9.0",
-    "typescript": "^2.0.10",
-    "webpack-typescript": "^0.5.6"
+    "typescript": "2.0.10",
+    "webpack-typescript": "^0.5.6",
+    "webpack": "^2.3.2"
   }
 }
