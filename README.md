@@ -2,7 +2,7 @@
 
 Algorithm to randomly match a given image.
 
-## Building first time
+### Building first time
 
 Install all the dependencies.
 
@@ -10,7 +10,7 @@ Install all the dependencies.
 npm install
 ```
 
-## Running
+### Running
 ```
 npm start
 ```
