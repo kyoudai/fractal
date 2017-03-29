@@ -162,7 +162,7 @@ class Fractal {
     let graphContext = this.graph.getContext('2d');
     let graphData: any = graphContext.getImageData(0, 0, this.canvas.width, this.canvas.height);
     let dat = graphData.data;
-    for (let i = 0; i <= canvasData.length - 5; i += 4) {
+    for (let i = 0; i < canvasData.length; i += 4) {
       differenceR = Math.abs(imageData[i] - canvasData[i] );
       differenceG = Math.abs(imageData[i + 1] - canvasData[i + 1]);
       differenceB = Math.abs(imageData[i + 2] - canvasData[i + 2]);
